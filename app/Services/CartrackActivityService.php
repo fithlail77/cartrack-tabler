@@ -29,6 +29,7 @@ class CartrackActivityService
             // Melakukan request dengan query parameter filter[date]
             $response = Http::withBasicAuth($this->username, $this->password)
                             ->timeout(45)
+                            ->connectTimeout(30)
                             ->withoutVerifying() // Bypass SSL jika di localhost
                             ->get("{$this->apiUrl}/vehicles/activity", [
                                 'filter' => [

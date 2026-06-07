@@ -23,6 +23,9 @@ class CartrackFuelService
 
     public function syncFuelData(?string $startLocal = null, ?string $endLocal = null): array
     {
+        // Mencegah timeout saat proses sinkronisasi yang memakan waktu karena ada sleep/delay
+        set_time_limit(0);
+
         try {
             // Cartrack API biasanya meminta format "Y-m-d H:i:s" untuk timestamp
             if ($startLocal && $endLocal) {
@@ -47,32 +50,49 @@ class CartrackFuelService
 
             $totalSynced = 0;
 
-            // Menggunakan chunk yang lebih kecil (misal 30) agar beban request tidak terlalu berat dalam satu waktu
-            foreach ($vehicles->chunk(50) as $chunkIndex => $chunk) {
+            // Menggunakan chunk 100 untuk mengurangi jumlah request (185 unit akan menjadi 2 chunk)
+            foreach ($vehicles->chunk(100) as $chunkIndex => $chunk) {
                 // Dokumentasi mewajibkan 'registrations' dikirim dalam bentuk Array
                 $registrationsArray = $chunk->keys()->toArray();
                 $currentPage = 1;
                 $lastPage = 1;
 
                 do {
-                    // Menggunakan metode POST sesuai dokumentasi Cartrack
-                    // Menambahkan .retry(3, 2000) -> Mencoba kembali 3x dengan jeda 2 detik jika gagal (termasuk error 429)
-                    $response = Http::withBasicAuth($this->apiUsername, $this->apiPassword)
-                                    ->withoutVerifying()
-                                    ->retry(3, 2000)
-                                    ->post($baseUrl . '/fuel/level?page=' . $currentPage, [
-                                        'start_timestamp' => $startTimestamp,
-                                        'end_timestamp'   => $endTimestamp,
-                                        'registrations'   => $registrationsArray
-                                    ]);
+                    $maxRetries = 3;
+                    $attempt = 0;
+                    $success = false;
+                    $response = null;
 
-                    if ($response->failed()) {
-                        $errorBody = $response->body();
-                        Log::error("Cartrack Fuel Sync API Error pada Chunk " . ($chunkIndex + 1), [
-                            'status' => $response->status(), 
-                            'response' => $errorBody
-                        ]);
-                        // Gunakan break untuk keluar dari do-while, tapi lanjut ke chunk kendaraan berikutnya
+                    while ($attempt < $maxRetries && !$success) {
+                        $response = Http::withBasicAuth($this->apiUsername, $this->apiPassword)
+                                        ->withoutVerifying()
+                                        ->post($baseUrl . '/fuel/level?page=' . $currentPage, [
+                                            'start_timestamp' => $startTimestamp,
+                                            'end_timestamp'   => $endTimestamp,
+                                            'registrations'   => $registrationsArray
+                                        ]);
+
+                        if ($response->status() === 429) {
+                            Log::warning("Rate limit 429 hit pada Chunk " . ($chunkIndex + 1) . " Page {$currentPage}. Menunggu 60 detik sebelum mencoba lagi...");
+                            sleep(60); // Tunggu 60 detik jika terkena rate limit
+                            $attempt++;
+                            continue;
+                        }
+
+                        if ($response->failed()) {
+                            $errorBody = $response->body();
+                            Log::error("Cartrack Fuel Sync API Error pada Chunk " . ($chunkIndex + 1) . " Page {$currentPage}", [
+                                'status' => $response->status(), 
+                                'response' => $errorBody
+                            ]);
+                            break; 
+                        }
+
+                        $success = true;
+                    }
+
+                    // Jika gagal setelah retries atau ada error lain, lanjut ke chunk berikutnya
+                    if (!$success || $response->failed()) {
                         break; 
                     }
 
@@ -117,8 +137,8 @@ class CartrackFuelService
 
                     $currentPage++;
                     
-                    // Tambahkan jeda 1 detik di setiap halaman untuk menghindari hit rate limit yang agresif
-                    sleep(1);
+                    // Jeda 6 detik di setiap request untuk memastikan tidak melebihi 10 request per menit (60s / 10 = 6s)
+                    sleep(6);
                 } while ($currentPage <= $lastPage);
             }
 

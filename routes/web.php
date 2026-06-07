@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\VehicleActivityController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\FuelConsumedController;
+use App\Http\Controllers\FuelFillController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -27,6 +28,9 @@ Route::middleware('auth')->group(function () {
     // Rute untuk data konsumsi bahan bakar Bulk
     Route::get('/fuel-consumed', [FuelConsumedController::class, 'index'])->name('fuels.index');
     Route::post('/fuel-consumed/sync', [FuelConsumedController::class, 'syncApi'])->name('fuels.sync');
+    // Rute untuk data pengisian bahan bakar
+    Route::get('/fuel-fill', [FuelFillController::class, 'index'])->name('fuel-fills.index');
+    Route::post('/fuel-fill/sync', [FuelFillController::class, 'sync'])->name('fuel-fills.sync');
 });
 
 require __DIR__.'/auth.php';

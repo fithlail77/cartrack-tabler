@@ -26,6 +26,7 @@
 							<li class=""><a href="{{ route('vehicles.index') }}" class="">Vehicle List</a></li>
 							<li class=""><a href="{{ route('cartrack.activity.index') }}" class="">Vehicle Activities</a></li>
 							<li class=""><a href="{{ route('fuels.index') }}" class="">Vehicle Fuel Consumed</a></li>
+							<li class=""><a href="{{ route('fuel-fills.index') }}" class="">Vehicle Fill Fuel</a></li>
 						</ul>
 					</li>
 					<li class="nav-item pcoded-hasmenu">
