@@ -7,6 +7,7 @@ use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\FuelConsumedController;
 use App\Http\Controllers\FuelFillController;
 use App\Http\Controllers\TripSyncController;
+use App\Http\Controllers\UserManagementController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -35,6 +36,15 @@ Route::middleware('auth')->group(function () {
     // Rute untuk data perjalanan
     Route::get('/trips/sync', [TripSyncController::class, 'index'])->name('trips.sync.index');
     Route::post('/trips/sync', [TripSyncController::class, 'sync'])->name('trips.sync.process');
+});
+// Admin routes for User Management (only admin role)
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/users', [UserManagementController::class, 'index'])->name('users.index');
+    Route::get('/users/create', [UserManagementController::class, 'create'])->name('users.create');
+    Route::post('/users', [UserManagementController::class, 'store'])->name('users.store');
+    Route::get('/users/{user}/edit', [UserManagementController::class, 'edit'])->name('users.edit');
+    Route::put('/users/{user}', [UserManagementController::class, 'update'])->name('users.update');
+    Route::delete('/users/{user}', [UserManagementController::class, 'destroy'])->name('users.destroy');
 });
 
 require __DIR__.'/auth.php';

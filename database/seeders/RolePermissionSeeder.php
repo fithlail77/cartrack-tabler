@@ -17,6 +17,7 @@ class RolePermissionSeeder extends Seeder
     public function run(): void
     {
         // Buat Permissions untuk menu
+        Permission::create(['name' => 'manage users']);
         Permission::create(['name' => 'view users']);
         Permission::create(['name' => 'view reports']);
         Permission::create(['name' => 'manage settings']);

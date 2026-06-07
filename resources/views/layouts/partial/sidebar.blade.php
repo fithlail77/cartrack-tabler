@@ -19,6 +19,17 @@
 					<li class="nav-item pcoded-menu-caption">
 						<label>Menu</label>
 					</li>
+					@role('admin')
+				<li class="nav-item pcoded-hasmenu">
+						<a href="#!" class="nav-link">
+							<span class="pcoded-micon"><i class="feather icon-settings"></i></span>
+							<span class="pcoded-mtext">Settings</span>
+						</a>
+						<ul class="pcoded-submenu">
+							<li><a href="{{ route('admin.users.index') }}" class="">User Management</a></li>
+						</ul>
+					</li>
+				@endrole
 					<li class="nav-item pcoded-hasmenu">
 						<a href="#!" class="nav-link"><span class="pcoded-micon"><i
 									class="feather icon-box"></i></span><span class="pcoded-mtext">Rest API Cartrack</span></a>
