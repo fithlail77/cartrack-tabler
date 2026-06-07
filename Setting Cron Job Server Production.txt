@@ -41,7 +41,7 @@ autorestart=true
 stopasgroup=true
 killasgroup=true
 user=www-data
-numprocs=1
+numprocs=1sud
 redirect_stderr=true
 stdout_logfile=/var/www/cartrack-tabler/storage/logs/worker.log
 stopwaitsecs=3600
@@ -55,7 +55,6 @@ bash
 sudo touch /var/www/cartrack-tabler/storage/logs/worker.log
 sudo chown www-data:www-data /var/www/cartrack-tabler/storage/logs/worker.log
 Restart dan Jalankan Supervisor: Beritahu Supervisor bahwa ada konfigurasi yang baru saja kita tambahkan:
-
 bash
 sudo supervisorctl reread
 sudo supervisorctl update
