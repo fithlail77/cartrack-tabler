@@ -1,3 +1,42 @@
+## SYNC API CARTRACK
+App ini dibuat untuk menarik data dari API Cartrack dan menyimpannya ke database dengan interval waktu tertentu. Database yang digunakan menggunakan PostgreSQL 15 (Lebih Tinggi).
+
+## FEATURES
+- Login Apps
+- Sync Vehicle List
+- Sync Vehicle Activities
+- Sync Vehicle Fuel Consumed
+- Sync Vehicle Trip
+
+App dibangun menggunakan Laravel 12 dan menggunakan template admin Bootstrap 5.
+
+## Cara Instalasi
+1. Install Composer
+2. Clone repository
+    - `git clone https://github.com/fithlail77/cartrack-tabler.git`
+3. Install dependencies `composer install`
+4. Copy file `.env.example` menjadi `.env`
+    - `cp .env.example .env`
+5. Isi kredensial Database di file `.env` (Sesuaikan Credential Anda)
+    - `DB_CONNECTION=pgsql`
+    - `DB_HOST=localhost`
+    - `DB_PORT=5432`
+    - `DB_DATABASE=cartrack`
+    - `DB_USERNAME=cartrack`
+    - `DB_PASSWORD=cartrack`
+6. Jalankan migrasi database `php artisan migrate`
+7. Run `php artisan serve`
+
+## Additional Infor
+Didalam apps juga terdapat fitur Laravel Job Queue yang dimana skrip bisa di buat berjalan otomatis menggunakan `php artisan schedule:work` dan cron job di server anda. (Saya menggunakan Linux Server)
+
+## Screenshoot
+![alt text](image-1.png)
+
+![alt text](image.png)
+
+![alt text](image-2.png)
+## ------------------------------------------------------------------------------------------------------------------------------------------------
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">

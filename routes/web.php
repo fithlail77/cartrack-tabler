@@ -6,6 +6,7 @@ use App\Http\Controllers\VehicleActivityController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\FuelConsumedController;
 use App\Http\Controllers\FuelFillController;
+use App\Http\Controllers\TripSyncController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -31,6 +32,9 @@ Route::middleware('auth')->group(function () {
     // Rute untuk data pengisian bahan bakar
     Route::get('/fuel-fill', [FuelFillController::class, 'index'])->name('fuel-fills.index');
     Route::post('/fuel-fill/sync', [FuelFillController::class, 'sync'])->name('fuel-fills.sync');
+    // Rute untuk data perjalanan
+    Route::get('/trips/sync', [TripSyncController::class, 'index'])->name('trips.sync.index');
+    Route::post('/trips/sync', [TripSyncController::class, 'sync'])->name('trips.sync.process');
 });
 
 require __DIR__.'/auth.php';

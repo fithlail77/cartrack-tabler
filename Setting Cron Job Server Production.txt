@@ -1,0 +1,74 @@
+Tentu, ini adalah panduan detail langkah demi langkah untuk mengatur Laravel Scheduler dan Queue Worker di server production Debian 12 yang menggunakan Apache2.
+
+Asumsi dalam panduan ini:
+
+Folder proyek Anda berada di /var/www/cartrack-tabler (Ganti dengan lokasi folder asli Anda jika berbeda).
+User default Apache di Debian adalah www-data. Sangat disarankan menjalankan Cron dan Worker dengan user ini untuk menghindari kendala hak akses (permission denied).
+Bagian 1: Mengatur Cron Job (Untuk Laravel Scheduler)
+Langkah ini berfungsi agar server "mengetuk" Laravel setiap menit untuk mengecek apakah ada jadwal (seperti jadwal harian jam 01:00 Anda) yang harus dieksekusi.
+
+Masuk ke terminal / SSH server Debian Anda.
+Buka editor crontab khusus untuk user www-data:
+bash
+sudo crontab -u www-data -e
+(Jika ditanya pilihan editor, pilih nano karena paling mudah digunakan).
+Tambahkan instruksi cron. Di bagian paling bawah dari baris yang ada di editor tersebut, tambahkan script berikut:
+bash
+* * * * * cd /var/www/cartrack-tabler && php artisan schedule:run >> /dev/null 2>&1
+Simpan dan Keluar (Jika menggunakan nano, tekan Ctrl+O, lalu Enter untuk menyimpan, dan Ctrl+X untuk keluar).
+Selesai! Cron job sekarang akan berjalan otomatis setiap menit mengecek routes/console.php.
+
+Bagian 2: Mengatur Supervisor (Untuk Laravel Queue Worker)
+Karena Job sinkronisasi Anda diproses di background (berstatus ShouldQueue), kita butuh antrean ini dijaga agar terus berjalan tanpa henti. Jika server mati atau proses error, Supervisor akan otomatis menghidupkannya kembali.
+
+Install Supervisor di server Debian Anda:
+
+bash
+sudo apt update
+sudo apt install supervisor -y
+Buat file konfigurasi Supervisor baru untuk Queue Laravel:
+
+bash
+sudo nano /etc/supervisor/conf.d/cartrack-worker.conf
+Masukkan konfigurasi berikut ke dalam editor teks:
+
+ini
+[program:cartrack-worker]
+process_name=%(program_name)s_%(process_num)02d
+command=php /var/www/cartrack-tabler/artisan queue:work --sleep=3 --tries=3 --max-time=3600
+autostart=true
+autorestart=true
+stopasgroup=true
+killasgroup=true
+user=www-data
+numprocs=1
+redirect_stderr=true
+stdout_logfile=/var/www/cartrack-tabler/storage/logs/worker.log
+stopwaitsecs=3600
+(Penjelasan singkat: Kita menyuruh program berjalan sebagai user www-data, otomatis hidup autorestart=true, dan menyimpan log error/success dari Job ke dalam file worker.log).
+
+Simpan dan tutup editor (Ctrl+O, Enter, Ctrl+X).
+
+Buat File Log Pekerja (Opsional, untuk berjaga-jaga): Pastikan file log memiliki akses yang tepat supaya supervisor tidak error saat mencoba menulis log:
+
+bash
+sudo touch /var/www/cartrack-tabler/storage/logs/worker.log
+sudo chown www-data:www-data /var/www/cartrack-tabler/storage/logs/worker.log
+Restart dan Jalankan Supervisor: Beritahu Supervisor bahwa ada konfigurasi yang baru saja kita tambahkan:
+
+bash
+sudo supervisorctl reread
+sudo supervisorctl update
+sudo supervisorctl start cartrack-worker:*
+Verifikasi Apakah Worker Sudah Berjalan:
+
+bash
+sudo supervisorctl status
+Pastikan Anda melihat hasil seperti ini: cartrack-worker:cartrack-worker_00      RUNNING   pid 12345, uptime 0:00:10
+
+Selesai!
+Sekarang server Debian 12 Anda sudah siap sepenuhnya.
+
+Cron Job akan memicu command secara spesifik setiap jam 01:00.
+Command tersebut melempar Job Sinkronisasi ke dalam Queue.
+Supervisor akan langsung sigap melihat Queue tersebut dan memprosesnya secara otomatis di background.
