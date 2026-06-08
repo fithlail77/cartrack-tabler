@@ -64,15 +64,24 @@ class CartrackFuelService
                     $response = null;
 
                     while ($attempt < $maxRetries && !$success) {
-                        $response = Http::withBasicAuth($this->apiUsername, $this->apiPassword)
-                                        ->withoutVerifying()
-                                        ->post($baseUrl . '/fuel/level?page=' . $currentPage, [
-                                            'start_timestamp' => $startTimestamp,
-                                            'end_timestamp'   => $endTimestamp,
-                                            'registrations'   => $registrationsArray
-                                        ]);
+                        try {
+                            $response = Http::withBasicAuth($this->apiUsername, $this->apiPassword)
+                                            ->withoutVerifying()
+                                            ->timeout(60) // Menambah total timeout menjadi 60 detik
+                                            ->connectTimeout(30) // Menambah waktu tunggu koneksi/resolving ke 30 detik
+                                            ->post($baseUrl . '/fuel/level?page=' . $currentPage, [
+                                                'start_timestamp' => $startTimestamp,
+                                                'end_timestamp'   => $endTimestamp,
+                                                'registrations'   => $registrationsArray
+                                            ]);
+                        } catch (\Illuminate\Http\Client\ConnectionException $e) {
+                            Log::warning("Koneksi timeout/gagal pada Chunk " . ($chunkIndex + 1) . " (Attempt " . ($attempt + 1) . "): " . $e->getMessage());
+                            $attempt++;
+                            sleep(2); // Tunggu sebentar sebelum coba lagi
+                            continue;
+                        }
 
-                        if ($response->status() === 429) {
+                        if ($response && $response->status() === 429) {
                             Log::warning("Rate limit 429 hit pada Chunk " . ($chunkIndex + 1) . " Page {$currentPage}. Menunggu 60 detik sebelum mencoba lagi...");
                             sleep(60); // Tunggu 60 detik jika terkena rate limit
                             $attempt++;
