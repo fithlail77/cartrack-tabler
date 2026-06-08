@@ -1,9 +1,14 @@
 	<nav class="pcoded-navbar menupos-fixed menu-light brand-blue ">
 		<div class="navbar-wrapper ">
 			<div class="navbar-brand header-logo">
-				<a href="index.html" class="b-brand">
-					<img src="{{ asset('assets/images/logo.svg') }}" alt="" class="logo images">
-					<img src="{{ asset('assets/images/logo-icon.svg') }}" alt="" class="logo-thumb images">
+				<a href="{{ route('dashboard') }}" class="b-brand gum-brand">
+					<div class="gum-logo-wrapper">
+						<img src="{{ asset('assets/images/gum.png') }}" alt="GUM Logo" class="gum-logo-img">
+						<div class="gum-brand-text">
+							<span class="gum-title">Cartrack API</span>
+							<span class="gum-subtitle">— GUM —</span>
+						</div>
+					</div>
 				</a>
 				<a class="mobile-menu" id="mobile-collapse" href="#!"><span></span></a>
 			</div>

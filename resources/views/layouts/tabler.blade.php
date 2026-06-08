@@ -28,6 +28,68 @@
 
 	<!-- vendor css -->
 	<link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+	<!-- Custom GUM Branding CSS -->
+	<style>
+		/* ===== GUM Brand Sidebar ===== */
+		.gum-brand {
+			text-decoration: none !important;
+			display: block !important;
+		}
+		.gum-logo-wrapper {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			padding: 6px 4px;
+		}
+		.gum-logo-img {
+			width: 42px;
+			height: 42px;
+			object-fit: contain;
+			border-radius: 10px;
+			background: rgba(255, 255, 255, 0.15);
+			padding: 4px;
+			box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+			flex-shrink: 0;
+			transition: transform 0.3s ease, box-shadow 0.3s ease;
+		}
+		.gum-brand:hover .gum-logo-img {
+			transform: scale(1.08) rotate(-3deg);
+			box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+		}
+		.gum-brand-text {
+			display: flex;
+			flex-direction: column;
+			line-height: 1.15;
+		}
+		.gum-title {
+			font-size: 13.5px;
+			font-weight: 700;
+			color: #ffffff;
+			letter-spacing: 0.3px;
+			white-space: nowrap;
+			text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+		}
+		.gum-subtitle {
+			font-size: 10px;
+			font-weight: 500;
+			color: rgba(255, 255, 255, 0.7);
+			letter-spacing: 2px;
+			text-transform: uppercase;
+			white-space: nowrap;
+		}
+		/* Hide brand text when sidebar is collapsed */
+		.navbar-collapsed .gum-brand-text,
+		.navbar-collapsed .gum-logo-wrapper {
+			justify-content: center;
+		}
+		.navbar-collapsed .gum-brand-text {
+			display: none;
+		}
+		.navbar-collapsed .gum-logo-img {
+			width: 36px;
+			height: 36px;
+		}
+	</style>
 </head>
 
 <body class="">
