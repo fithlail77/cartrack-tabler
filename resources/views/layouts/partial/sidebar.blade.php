@@ -50,8 +50,7 @@
 						<a href="#!" class="nav-link"><span class="pcoded-micon"><i
 									class="feather icon-box"></i></span><span class="pcoded-mtext">Reports</span></a>
 						<ul class="pcoded-submenu">
-							<li class=""><a href="bc_button.html" class="">Sinkronisasi Data</a></li>
-							<li class=""><a href="bc_badges.html" class="">Laporan</a></li>
+							<li class=""><a href="{{ route('reports.activity.index') }}" class="">Vehicle Activities</a></li>
 						</ul>
 					</li>
 				</ul>

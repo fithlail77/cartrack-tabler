@@ -90,6 +90,8 @@
 			height: 36px;
 		}
 	</style>
+
+	@stack('css')
 </head>
 
 <body class="">
@@ -185,7 +187,8 @@
 	<script src="{{ asset('assets/js/vendor-all.min.js') }}"></script>
 	<script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
 	<script src="{{ asset('assets/js/pcoded.min.js') }}"></script>
-
+	
+	@stack('js')
 </body>
 
 </html>

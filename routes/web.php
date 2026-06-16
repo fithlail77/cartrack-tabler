@@ -14,6 +14,7 @@ use App\Http\Controllers\FuelConsumedController;
 use App\Http\Controllers\FuelFillController;
 use App\Http\Controllers\TripSyncController;
 use App\Http\Controllers\UserManagementController;
+use App\Http\Controllers\ActivityReportController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -66,6 +67,10 @@ Route::middleware('auth')->group(function () {
     // Rute untuk data perjalanan
     Route::get('/trips/sync', [TripSyncController::class, 'index'])->name('trips.sync.index');
     Route::post('/trips/sync', [TripSyncController::class, 'sync'])->name('trips.sync.process');
+    // Rute untuk laporan aktivitas kendaraan
+    Route::get('/reports/vehicle-activities', [ActivityReportController::class, 'index'])->name('reports.activity.index');
+    Route::get('/reports/vehicle-activities/data', [ActivityReportController::class, 'getData'])->name('reports.activity.data');
+    Route::get('/reports/vehicle-activities/export', [ActivityReportController::class, 'export'])->name('reports.activity.export');
 });
 // Admin routes for User Management (only admin role)
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
