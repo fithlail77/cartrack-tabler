@@ -18,7 +18,8 @@ class VehicleActivityController extends Controller
     // Menampilkan halaman dashboard aktivitas beserta data yang ada di DB
     public function index(Request $request)
     {
-        $selectedDate = $request->get('date', date('Y-m-d'));
+        // Jika parameter 'date' tidak ada, maka default ke H-1 (kemarin)
+        $selectedDate = $request->get('date', now()->subDay()->toDateString());
         
         // Menampilkan data berdasarkan filter tanggal di view dengan pagination 10
         $activities = VehicleActivity::where('activity_date', $selectedDate)

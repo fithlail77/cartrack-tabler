@@ -53,13 +53,13 @@
                                                 <div class="col-md-4">
                                                     <div class="form-group mb-0">
                                                         <label class="font-weight-bold text-muted small">Start Date & Time (WIB)</label>
-                                                        <input type="datetime-local" name="start_timestamp" class="form-control" value="{{ \Carbon\Carbon::now()->startOfDay()->format('Y-m-d\TH:i') }}" required>
+                                                        <input type="datetime-local" name="start_timestamp" class="form-control" value="{{ \Carbon\Carbon::yesterday()->startOfDay()->format('Y-m-d\TH:i') }}" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div class="form-group mb-0">
                                                         <label class="font-weight-bold text-muted small">End Date & Time (WIB)</label>
-                                                        <input type="datetime-local" name="end_timestamp" class="form-control" value="{{ \Carbon\Carbon::now()->endOfDay()->format('Y-m-d\TH:i') }}" required>
+                                                        <input type="datetime-local" name="end_timestamp" class="form-control" value="{{ \Carbon\Carbon::yesterday()->endOfDay()->format('Y-m-d\TH:i') }}" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
@@ -77,8 +77,8 @@
                                 <div class="card shadow-sm">
                                     <div class="card-header pb-0 border-bottom-0">
                                         @php
-                                            $displayStart = request('filter_start', \Carbon\Carbon::today()->format('Y-m-d'));
-                                            $displayEnd = request('filter_end', \Carbon\Carbon::today()->format('Y-m-d'));
+                                            $displayStart = request('filter_start', \Carbon\Carbon::yesterday()->format('Y-m-d'));
+                                            $displayEnd = request('filter_end', \Carbon\Carbon::yesterday()->format('Y-m-d'));
                                         @endphp
                                         <h4>Riwayat Trips: {{ \Carbon\Carbon::parse($displayStart)->translatedFormat('d M Y') }} - {{ \Carbon\Carbon::parse($displayEnd)->translatedFormat('d M Y') }}</h4>
                                     </div>

@@ -19,9 +19,9 @@ class TripSyncController extends Controller
     {
         $query = \App\Models\CartrackTrip::query();
 
-        // Menggunakan hari ini sebagai default jika tidak ada filter yang dipilih
-        $startDate = $request->get('filter_start', \Carbon\Carbon::today()->toDateString());
-        $endDate = $request->get('filter_end', \Carbon\Carbon::today()->toDateString());
+        // Menggunakan H-1 (Kemarin) sebagai default jika tidak ada filter yang dipilih
+        $startDate = $request->get('filter_start', \Carbon\Carbon::yesterday()->toDateString());
+        $endDate = $request->get('filter_end', \Carbon\Carbon::yesterday()->toDateString());
 
         $start = \Carbon\Carbon::parse($startDate)->startOfDay();
         $end = \Carbon\Carbon::parse($endDate)->endOfDay();
