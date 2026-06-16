@@ -2,6 +2,12 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Models\Vehicle;
+use App\Models\FuelConsumedLevel;
+use App\Models\FuelFill;
+use App\Models\CartrackTrip;
+use App\Models\VehicleActivity;
+use Carbon\Carbon;
 use App\Http\Controllers\VehicleActivityController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\FuelConsumedController;
@@ -14,7 +20,31 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $startOfMonth = Carbon::now()->startOfMonth();
+    $endOfMonth = Carbon::now()->endOfMonth();
+
+    $totalVehicles = Vehicle::count();
+    
+    $totalFuelConsumed = FuelConsumedLevel::whereBetween('start_period_timestamp', [$startOfMonth, $endOfMonth])
+        ->sum('estimated_fuel_used');
+
+    $totalFuelFills = FuelFill::whereBetween('fill_timestamp', [$startOfMonth, $endOfMonth])
+        ->sum('fill_ammount_litres');
+
+    $totalDistanceMeters = CartrackTrip::whereBetween('start_timestamp', [$startOfMonth, $endOfMonth])
+        ->sum('trip_distance');
+
+    $totalDistance = $totalDistanceMeters / 1000;
+
+    $totalDrivingHours = VehicleActivity::whereBetween('activity_date', [$startOfMonth, $endOfMonth])
+        ->sum('driving_time_seconds') / 3600;
+
+    $totalIdleHours = VehicleActivity::whereBetween('activity_date', [$startOfMonth, $endOfMonth])
+        ->sum('idle_time_seconds') / 3600;
+
+    return view('dashboard', compact(
+        'totalVehicles', 'totalFuelConsumed', 'totalFuelFills', 'totalDistance', 'totalDrivingHours', 'totalIdleHours'
+    ));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -48,5 +78,3 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 });
 
 require __DIR__.'/auth.php';
-
-
