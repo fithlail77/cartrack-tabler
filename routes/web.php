@@ -43,8 +43,25 @@ Route::get('/dashboard', function () {
     $totalIdleHours = VehicleActivity::whereBetween('activity_date', [$startOfMonth, $endOfMonth])
         ->sum('idle_time_seconds') / 3600;
 
+    // Data untuk Grafik Fuel Consumed Monthly (Tahun Berjalan)
+    $currentYear = Carbon::now()->year;
+    $monthlyFuelRaw = FuelConsumedLevel::selectRaw('EXTRACT(MONTH FROM start_period_timestamp) as month, SUM(estimated_fuel_used) as total')
+        ->whereYear('start_period_timestamp', $currentYear)
+        ->groupBy('month')
+        ->orderBy('month')
+        ->get();
+
+    $chartLabels = [];
+    $chartData = [];
+    for ($m = 1; $m <= 12; $m++) {
+        $chartLabels[] = Carbon::create()->month($m)->translatedFormat('F');
+        $monthData = $monthlyFuelRaw->firstWhere('month', (float)$m);
+        $chartData[] = $monthData ? round($monthData->total, 2) : 0;
+    }
+
     return view('dashboard', compact(
-        'totalVehicles', 'totalFuelConsumed', 'totalFuelFills', 'totalDistance', 'totalDrivingHours', 'totalIdleHours'
+        'totalVehicles', 'totalFuelConsumed', 'totalFuelFills', 'totalDistance', 'totalDrivingHours', 'totalIdleHours',
+        'chartLabels', 'chartData'
     ));
 })->middleware(['auth', 'verified'])->name('dashboard');
 

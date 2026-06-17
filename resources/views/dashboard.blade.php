@@ -190,6 +190,18 @@
 										</div>
 									</div>
 								</div>
+								<!-- Section for Site Visitors Session Log -->
+								<div class="col-xl-8 col-md-6">
+									<div class="card table-card">
+										<div class="card-header">
+											<h5>Grafik Fuel Consumed Monthly</h5>
+										</div>
+										<div class="card-body">
+											<canvas id="fuelChart" style="min-height: 300px;"></canvas>
+										</div>
+									</div>
+								</div>
+								<!-- end section -->
 							</div>
 							<!-- [ Main Content ] end -->
 						</div>
@@ -199,3 +211,86 @@
 		</div>
 	</div>
 @endsection
+
+@push('js')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const ctx = document.getElementById('fuelChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            plugins: [ChartDataLabels],
+            data: {
+                labels: {!! json_encode($chartLabels) !!},
+                datasets: [{
+                    label: 'Konsumsi BBM (Liter)',
+                    data: {!! json_encode($chartData) !!},
+                    backgroundColor: 'rgba(54, 162, 235, 0.8)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1,
+                    borderRadius: 6,
+                    borderSkipped: false,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                layout: {
+                    padding: {
+                        top: 30, // Memberi ruang agar label angka tidak terpotong bingkai atas
+                        bottom: 10
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'top',
+                        offset: 4, // Jarak kecil antara angka dan ujung batang
+                        formatter: function(value) {
+                            return value > 0 ? new Intl.NumberFormat('id-ID').format(value) + ' L' : '';
+                        },
+                        font: {
+                            weight: 'bold'
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) label += ': ';
+                                if (context.parsed.y !== null) {
+                                    label += new Intl.NumberFormat('id-ID').format(context.parsed.y) + ' Liter';
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grace: '15%', // Menambah 15% ruang kosong di atas batang tertinggi
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return value + ' L';
+                            }
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+@endpush
