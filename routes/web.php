@@ -59,9 +59,22 @@ Route::get('/dashboard', function () {
         $chartData[] = $monthData ? round($monthData->total, 2) : 0;
     }
 
+    // Data untuk Grafik Top 10 Highest Fuel Fills (Bulan Ini)
+    $currentMonthName = Carbon::now()->translatedFormat('F Y');
+    $topFuelFills = FuelFill::select('registration')
+        ->selectRaw('SUM(fill_ammount_litres) as total')
+        ->whereBetween('fill_timestamp', [$startOfMonth, $endOfMonth])
+        ->groupBy('registration')
+        ->orderByDesc('total')
+        ->limit(10)
+        ->get();
+
+    $topFuelLabels = $topFuelFills->pluck('registration');
+    $topFuelData = $topFuelFills->pluck('total');
+
     return view('dashboard', compact(
         'totalVehicles', 'totalFuelConsumed', 'totalFuelFills', 'totalDistance', 'totalDrivingHours', 'totalIdleHours',
-        'chartLabels', 'chartData'
+        'chartLabels', 'chartData', 'topFuelLabels', 'topFuelData', 'currentMonthName'
     ));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
