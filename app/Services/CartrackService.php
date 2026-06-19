@@ -68,6 +68,7 @@ class CartrackService
                             'vehicle_type'   => $item['vehicle_type'],
                             'created_at'     => now(),
                             'updated_at'     => now(),
+                            'client_vehicle_description' => $item['client_vehicle_description'] ?? null, // Tambahkan field ini jika ada di API
                         ];
                     }
 
@@ -78,7 +79,7 @@ class CartrackService
                         ['vehicle_id'], 
                         [
                             'registration', 'vehicle_name', 'max_speed', 'manufacturer', 
-                            'model', 'model_year', 'colour', 'chassis_number', 'vehicle_type', 'updated_at'
+                            'model', 'model_year', 'colour', 'chassis_number', 'vehicle_type', 'updated_at', 'client_vehicle_description'
                         ]
                     );
 

@@ -19,5 +19,6 @@ class Vehicle extends Model
         'colour',
         'chassis_number',
         'vehicle_type',
+        'client_vehicle_description',
     ];
 }

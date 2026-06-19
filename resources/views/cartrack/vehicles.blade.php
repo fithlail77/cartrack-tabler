@@ -88,6 +88,7 @@
                                                         <th>Merek</th>
                                                         <th>Tipe</th>
                                                         <th>Tahun</th>
+                                                        <th>Kelompok</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -100,6 +101,7 @@
 															<td>{{ $vehicle->manufacturer ?? '-' }}</td>
 															<td>{{ $vehicle->vehicle_type ?? '-' }}</td>
 															<td>{{ $vehicle->model_year ?? '-' }}</td>
+                                                            <td>{{ $vehicle->client_vehicle_description ?? '-' }}</td>
                                                         </tr>
                                                     @empty
                                                         <tr>

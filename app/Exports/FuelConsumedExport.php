@@ -1,0 +1,60 @@
+<?php
+
+namespace App\Exports;
+
+use App\Models\FuelConsumedLevel;
+use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Carbon\Carbon;
+
+class FuelConsumedExport implements FromQuery, WithHeadings, WithMapping, ShouldAutoSize
+{
+    protected $request;
+
+    public function __construct($request)
+    {
+        $this->request = $request;
+    }
+
+    public function query()
+    {
+        $query = FuelConsumedLevel::query();
+
+        if ($this->request->start_date && $this->request->end_date) {
+            $query->whereDate('start_period_timestamp', '>=', $this->request->start_date)
+                  ->whereDate('start_period_timestamp', '<=', $this->request->end_date);
+        }
+
+        $query->when($this->request->registration, function ($q) {
+            return $q->where('registration', $this->request->registration);
+        });
+
+        return $query->orderBy('start_period_timestamp', 'desc');
+    }
+
+    public function headings(): array
+    {
+        return [
+            'Registration',
+            'Start Period (Jakarta)',
+            'Start Liters',
+            'End Period (Jakarta)',
+            'End Liters',
+            'Estimated Fuel Used (L)',
+        ];
+    }
+
+    public function map($fuel): array
+    {
+        return [
+            $fuel->registration,
+            $fuel->start_period_timestamp ? Carbon::parse($fuel->start_period_timestamp)->format('d-m-Y H:i:s') : '-',
+            $fuel->start_period_liters,
+            $fuel->end_period_timestamp ? Carbon::parse($fuel->end_period_timestamp)->format('d-m-Y H:i:s') : '-',
+            $fuel->end_period_liters,
+            $fuel->estimated_fuel_used,
+        ];
+    }
+}
