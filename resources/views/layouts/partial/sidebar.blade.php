@@ -51,7 +51,7 @@
 									class="feather icon-box"></i></span><span class="pcoded-mtext">Reports</span></a>
 						<ul class="pcoded-submenu">
 							<li class=""><a href="{{ route('reports.activity.index') }}" class="">Vehicle Activities</a></li>
-							<li class=""><a href="" class="">Vehicle Fuel Consumed</a></li>
+							<li class=""><a href="{{ route('reports.fuel.index') }}" class="">Vehicle Fuel Consumed</a></li>
 						</ul>
 					</li>
 				</ul>
