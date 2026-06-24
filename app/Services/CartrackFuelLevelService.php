@@ -50,4 +50,26 @@ class CartrackFuelLevelService
             return null;
         }
     }
+
+    public function getVehicleActivity(string $date): ?array
+    {
+        try {
+            // Catatan: Sesuaikan endpoint URL `/rest/activity/` dengan dokumentasi resmi Cartrack jika berbeda
+            $response = $this->client()->get("/vehicles/activity", [
+                'filter[date]' => $date,
+            ]);
+
+            if ($response->successful()) {
+                return $response->json('data'); // Mengambil array dari key 'data'
+            }
+
+            // Opsional: Anda bisa menambahkan log khusus jika response gagal (misal 401 Unauthorized)
+            Log::error('Cartrack API Error: ' . $response->status() . ' - ' . $response->body());
+            
+            return null;
+        } catch (Exception $e) {
+            report($e);
+            return null;
+        }
+    }
 }

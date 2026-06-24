@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class VehicleActivity extends Model
 {
@@ -23,10 +24,14 @@ class VehicleActivity extends Model
         'last_name',
     ];
 
-    protected function casts(): array
+    protected $casts = [
+        'activity_date' => 'date',
+        'first_ignition_on' => 'datetime',
+        'last_ignition_off' => 'datetime',
+    ];
+
+    public function vehicle(): BelongsTo
     {
-        return [
-            'activity_date' => 'date',
-        ];
+        return $this->belongsTo(Vehicle::class);
     }
 }
