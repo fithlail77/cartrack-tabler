@@ -25,4 +25,4 @@ Artisan::command('inspire', function () {
 
 // Command ini akan berjalan setiap hari pada jam 01:00 Pagi
 // dan secara otomatis menarik data H-1 berkat konfigurasi di Langkah 1
-Schedule::command('cartrack:sync-fuel')->dailyAt('08:15')->withoutOverlapping();
+Schedule::command('cartrack:sync-fuel')->dailyAt('08:23')->withoutOverlapping();

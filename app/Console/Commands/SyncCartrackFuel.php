@@ -25,6 +25,12 @@ class SyncCartrackFuel extends Command
     /**
      * Execute the console command.
      */
+    // 🛑 PASTIKAN BARIS INI ADA (Ini adalah nama command-nya)
+    protected $signature = 'cartrack:sync-fuel {--start=} {--end=}';
+    
+    // Opsional tapi disarankan
+    protected $description = 'Menarik data level BBM dari Cartrack untuk seluruh kendaraan';
+    
     public function handle()
     {
         // Ubah bagian ini agar defaultnya adalah H-1 (Kemarin)
