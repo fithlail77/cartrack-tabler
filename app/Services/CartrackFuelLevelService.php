@@ -118,4 +118,31 @@ class CartrackFuelLevelService
             return null;
         }
     }
+
+    /**
+     * Mengambil data Trips secara massal (berisi Pagination)
+     * Mengembalikan struktur lengkap agar Job bisa membaca 'meta' untuk melihat total page
+     */
+    public function getTrips(string $startTimestamp, string $endTimestamp, int $page = 1): ?array
+    {
+        try {
+            // Catatan: Sesuaikan "/trips" dengan endpoint asli Cartrack jika dibutuhkan (misal "/rest/trips")
+            $response = $this->client()->get("/trips", [
+                'start_timestamp' => $startTimestamp,
+                'end_timestamp' => $endTimestamp,
+                'page' => $page // Parameter pagination API Cartrack
+            ]);
+
+            if ($response->successful()) {
+                // Return full JSON termasuk 'meta' dan 'data' agar Job bisa baca $response['meta']['last_page']
+                return $response->json(); 
+            }
+
+            Log::error("Cartrack API Error (Trips Page {$page}): " . $response->status() . " - " . $response->body());
+            return null;
+        } catch (Exception $e) {
+            report($e);
+            return null;
+        }
+    }
 }

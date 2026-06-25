@@ -30,6 +30,9 @@ Schedule::command('cartrack:sync-fuel')->dailyAt('01:00')->withoutOverlapping();
 // Sinkronisasi Activity Jam 01:30 Pagi (diberi jeda agar server dan antrean tidak terlalu berat)
 Schedule::command('cartrack:sync-activity')->dailyAt('01:30')->withoutOverlapping();
 
-// Sinkronisasi Activity Jam 01:30 Pagi (diberi jeda agar server dan antrean tidak terlalu berat)
+// Sinkronisasi Activity Jam 02:00 Pagi (diberi jeda agar server dan antrean tidak terlalu berat)
 Schedule::command('cartrack:sync-fuel-fills')->dailyAt('02:00')->withoutOverlapping();
+
+// Sinkronisasi Activity Jam 02:30 Pagi (diberi jeda agar server dan antrean tidak terlalu berat)
+Schedule::command('cartrack:sync-trips')->dailyAt('02:30')->withoutOverlapping();
 
