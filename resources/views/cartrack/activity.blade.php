@@ -26,8 +26,7 @@
 						</div>
 						<!-- [ breadcrumb ] end -->
 						<!-- [ Main Content ] start -->
-						<div class="row">
-							<!-- [ badge ] start -->
+						<!--<div class="row">
 							<div class="col-sm-12">
 								<div class="card">
 									<div class="card-header">
@@ -70,8 +69,7 @@
                                     </div>
 								</div>
 							</div>
-							<!-- [ badge ] end -->
-						</div>
+						</div> -->
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="card">

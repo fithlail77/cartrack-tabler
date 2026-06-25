@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Models\FuelConsumedLevel;
+use App\Models\FuelLevel;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
@@ -20,11 +20,11 @@ class FuelConsumedExport implements FromQuery, WithHeadings, WithMapping, Should
 
     public function query()
     {
-        $query = FuelConsumedLevel::query();
+        $query = FuelLevel::query();
 
         if ($this->request->start_date && $this->request->end_date) {
-            $query->whereDate('start_period_timestamp', '>=', $this->request->start_date)
-                  ->whereDate('start_period_timestamp', '<=', $this->request->end_date);
+            $query->whereDate('start_timestamp', '>=', $this->request->start_date)
+                  ->whereDate('start_timestamp', '<=', $this->request->end_date);
         }
 
         $query->when($this->request->registration, function ($q) {
@@ -50,10 +50,10 @@ class FuelConsumedExport implements FromQuery, WithHeadings, WithMapping, Should
     {
         return [
             $fuel->registration,
-            $fuel->start_period_timestamp ? Carbon::parse($fuel->start_period_timestamp)->format('d-m-Y H:i:s') : '-',
-            $fuel->start_period_liters,
-            $fuel->end_period_timestamp ? Carbon::parse($fuel->end_period_timestamp)->format('d-m-Y H:i:s') : '-',
-            $fuel->end_period_liters,
+            $fuel->start_liters,
+            $fuel->start_timestamp ? Carbon::parse($fuel->start_timestamp)->format('d-m-Y H:i:s') : '-',
+            $fuel->end_liters,
+            $fuel->end_timestamp ? Carbon::parse($fuel->end_timestamp)->format('d-m-Y H:i:s') : '-',
             $fuel->estimated_fuel_used,
         ];
     }

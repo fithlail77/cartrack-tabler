@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Vehicle;
-use App\Models\FuelConsumedLevel;
+use App\Models\FuelLevel;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use App\Exports\FuelConsumedExport;
@@ -21,12 +21,12 @@ class FuelReportController extends Controller
 
     public function getData(Request $request)
     {
-        $query = FuelConsumedLevel::query();
+        $query = FuelLevel::query();
 
         // Filter Range Tanggal berdasarkan start_period_timestamp
         if ($request->start_date && $request->end_date) {
-            $query->whereDate('start_period_timestamp', '>=', $request->start_date)
-                  ->whereDate('start_period_timestamp', '<=', $request->end_date);
+            $query->whereDate('start_timestamp', '>=', $request->start_date)
+                  ->whereDate('start_timestamp', '<=', $request->end_date);
         }
 
         // Filter Registrasi (Opsional)
@@ -36,17 +36,17 @@ class FuelReportController extends Controller
 
         return DataTables::of($query)
             ->addIndexColumn()
-            ->editColumn('start_period_timestamp', function($row) {
-                return $row->start_period_timestamp ? Carbon::parse($row->start_period_timestamp)->format('d-m-Y H:i:s') : '-';
+            ->editColumn('start_timestamp', function($row) {
+                return $row->start_timestamp ? Carbon::parse($row->start_timestamp)->format('d-m-Y H:i:s') : '-';
             })
-            ->editColumn('end_period_timestamp', function($row) {
-                return $row->end_period_timestamp ? Carbon::parse($row->end_period_timestamp)->format('d-m-Y H:i:s') : '-';
+            ->editColumn('end_timestamp', function($row) {
+                return $row->end_timestamp ? Carbon::parse($row->end_timestamp)->format('d-m-Y H:i:s') : '-';
             })
-            ->editColumn('start_period_liters', function($row) {
-                return number_format($row->start_period_liters, 2) . ' L';
+            ->editColumn('start_liters', function($row) {
+                return number_format($row->start_liters, 2) . ' L';
             })
-            ->editColumn('end_period_liters', function($row) {
-                return number_format($row->end_period_liters, 2) . ' L';
+            ->editColumn('end_liters', function($row) {
+                return number_format($row->end_liters, 2) . ' L';
             })
             ->editColumn('estimated_fuel_used', function($row) {
                 return number_format($row->estimated_fuel_used, 2) . ' L';

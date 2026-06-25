@@ -152,7 +152,7 @@
 												</div>
 												<div class="col-6">
 													<h6 class="text-center m-b-10"><span class="text-muted m-r-5">Waste:</span>
-														{{ number_format($totalIdleHours * 2.5, 1) }} L*
+														{{ number_format($totalIdleHours * 2.5, 1) }} L
 													</h6>
 												</div>
 											</div>

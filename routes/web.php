@@ -3,7 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Vehicle;
-use App\Models\FuelConsumedLevel;
+use App\Models\FuelLevel;
 use App\Models\FuelFill;
 use App\Models\CartrackTrip;
 use App\Models\VehicleActivity;
@@ -27,7 +27,7 @@ Route::get('/dashboard', function () {
 
     $totalVehicles = Vehicle::count();
     
-    $totalFuelConsumed = FuelConsumedLevel::whereBetween('start_period_timestamp', [$startOfMonth, $endOfMonth])
+    $totalFuelConsumed = FuelLevel::whereBetween('start_timestamp', [$startOfMonth, $endOfMonth])
         ->sum('estimated_fuel_used');
 
     $totalFuelFills = FuelFill::whereBetween('fill_timestamp', [$startOfMonth, $endOfMonth])
@@ -46,8 +46,8 @@ Route::get('/dashboard', function () {
 
     // Data untuk Grafik Fuel Consumed Monthly (Tahun Berjalan)
     $currentYear = Carbon::now()->year;
-    $monthlyFuelRaw = FuelConsumedLevel::selectRaw('EXTRACT(MONTH FROM start_period_timestamp) as month, SUM(estimated_fuel_used) as total')
-        ->whereYear('start_period_timestamp', $currentYear)
+    $monthlyFuelRaw = FuelLevel::selectRaw('EXTRACT(MONTH FROM start_timestamp) as month, SUM(estimated_fuel_used) as total')
+        ->whereYear('start_timestamp', $currentYear)
         ->groupBy('month')
         ->orderBy('month')
         ->get();

@@ -25,7 +25,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-12 mb-3">
+                            <!--<div class="col-sm-12 mb-3">
                                 <div class="card shadow-sm">
                                     <div class="card-header border-bottom-0">
                                         <h5 class="m-b-0"><i class="feather icon-download-cloud mr-2"></i> Tarik Data Estimasi Manual (API)</h5>
@@ -71,7 +71,7 @@
                                         </form>
                                     </div>
                                 </div>
-                            </div>
+                            </div>-->
                             
                             <div class="col-sm-12">
                                 <div class="card shadow-sm">
@@ -117,10 +117,10 @@
                                                     <tr>
                                                         <th width="50">No</th>
                                                         <th>Registrasi</th>
+                                                        <th>BBM Awal (L)</th>
                                                         <th>Waktu Mulai</th>
+                                                        <th>BBM Akhir (L)</th>
                                                         <th>Waktu Akhir</th>
-                                                        <th>Sisa Awal (L)</th>
-                                                        <th>Sisa Akhir (L)</th>
                                                         <th>Estimasi Pemakaian (L)</th>
                                                     </tr>
                                                 </thead>
@@ -129,10 +129,10 @@
                                                         <tr>
                                                             <td>{{ $fuels->firstItem() + $loop->index }}</td>
                                                             <td class="font-weight-bold">{{ $item->registration }}</td>
-                                                            <td>{{ \Carbon\Carbon::parse($item->start_period_timestamp)->format('d-M-Y H:i') }}</td>
-                                                            <td>{{ \Carbon\Carbon::parse($item->end_period_timestamp)->format('d-M-Y H:i') }}</td>
-                                                            <td>{{ number_format($item->start_period_liters, 2) }}</td>
-                                                            <td>{{ number_format($item->end_period_liters, 2) }}</td>
+                                                            <td>{{ number_format($item->start_liters, 2) }}</td>
+                                                            <td>{{ \Carbon\Carbon::parse($item->start_timestamp)->format('d-M-Y H:i') }}</td>
+                                                            <td>{{ number_format($item->end_liters, 2) }}</td>
+                                                            <td>{{ \Carbon\Carbon::parse($item->end_timestamp)->format('d-M-Y H:i') }}</td>
                                                             <td class="text-danger font-weight-bold">
                                                                 {{ number_format($item->estimated_fuel_used, 2) }}
                                                             </td>

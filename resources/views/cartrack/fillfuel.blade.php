@@ -25,7 +25,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-12 mb-3">
+                            <!--<div class="col-sm-12 mb-3">
                                 <div class="card shadow-sm">
                                     <div class="card-header border-bottom-0">
                                         <h5 class="m-b-0"><i class="feather icon-download-cloud mr-2"></i> Data Pengisian Bahan Bakar</h5>
@@ -71,7 +71,7 @@
                                         </form>
                                     </div>
                                 </div>
-                            </div>
+                            </div>-->
                             
                             <div class="col-sm-12">
                                 <div class="card shadow-sm">

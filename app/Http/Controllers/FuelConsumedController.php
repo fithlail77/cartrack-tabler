@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\FuelConsumedLevel;
+use App\Models\FuelLevel;
 use App\Services\CartrackFuelService;
 use Carbon\Carbon;
 
@@ -11,7 +11,7 @@ class FuelConsumedController extends Controller
 {
     public function index(Request $request)
     {
-        $query = FuelConsumedLevel::query();
+        $query = FuelLevel::query();
 
         // Menggunakan H-1 (Kemarin) sebagai default jika tidak ada filter yang dipilih
         $startDate = $request->get('filter_start', Carbon::yesterday()->toDateString());
@@ -20,9 +20,9 @@ class FuelConsumedController extends Controller
         $start = Carbon::parse($startDate)->startOfDay();
         $end = Carbon::parse($endDate)->endOfDay();
 
-        $query->whereBetween('end_period_timestamp', [$start, $end]);
+        $query->whereBetween('end_timestamp', [$start, $end]);
 
-        $fuels = $query->orderBy('end_period_timestamp', 'desc')->paginate(10);
+        $fuels = $query->orderBy('end_timestamp', 'desc')->paginate(10);
         
         return view('cartrack.fuel_consumed', compact('fuels'));
     }

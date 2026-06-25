@@ -55,10 +55,10 @@
                                         <tr>
                                             <th>No</th>
                                             <th>Registrasi</th>
-                                            <th>Start Period (Jakarta)</th>
                                             <th>Start Liters</th>
-                                            <th>End Period (Jakarta)</th>
+                                            <th>Start Period (Jakarta)</th>
                                             <th>End Liters</th>
+                                            <th>End Period (Jakarta)</th>
                                             <th>Estimated Fuel Used (L)</th>
                                         </tr>
                                     </thead>
@@ -98,10 +98,10 @@ $(function() {
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
             {data: 'registration', name: 'registration'},
-            {data: 'start_period_timestamp', name: 'start_period_timestamp'},
-            {data: 'start_period_liters', name: 'start_period_liters'},
-            {data: 'end_period_timestamp', name: 'end_period_timestamp'},
-            {data: 'end_period_liters', name: 'end_period_liters'},
+            {data: 'start_liters', name: 'start_liters'},
+            {data: 'start_timestamp', name: 'start_timestamp'},
+            {data: 'end_liters', name: 'end_liters'},
+            {data: 'end_timestamp', name: 'end_timestamp'},
             {data: 'estimated_fuel_used', name: 'estimated_fuel_used'},
         ]
     });
