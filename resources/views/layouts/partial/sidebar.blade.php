@@ -52,6 +52,8 @@
 						<ul class="pcoded-submenu">
 							<li class=""><a href="{{ route('reports.activity.index') }}" class="">Vehicle Activities</a></li>
 							<li class=""><a href="{{ route('reports.fuel.index') }}" class="">Vehicle Fuel Consumed</a></li>
+							<li class=""><a href="{{ route('reports.fuel-fill.index') }}" class="">Vehicle Fuel Fills</a></li>
+							<li class=""><a href="{{ route('reports.trips.index') }}" class="">Vehicle Trips</a></li>
 						</ul>
 					</li>
 				</ul>

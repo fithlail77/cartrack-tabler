@@ -31,17 +31,17 @@ class FuelConsumedExport implements FromQuery, WithHeadings, WithMapping, Should
             return $q->where('registration', $this->request->registration);
         });
 
-        return $query->orderBy('start_period_timestamp', 'desc');
+        return $query->orderBy('start_timestamp', 'desc');
     }
 
     public function headings(): array
     {
         return [
             'Registration',
-            'Start Period (Jakarta)',
             'Start Liters',
-            'End Period (Jakarta)',
+            'Start Period (Jakarta)',
             'End Liters',
+            'End Period (Jakarta)',
             'Estimated Fuel Used (L)',
         ];
     }
@@ -54,7 +54,7 @@ class FuelConsumedExport implements FromQuery, WithHeadings, WithMapping, Should
             $fuel->start_timestamp ? Carbon::parse($fuel->start_timestamp)->format('d-m-Y H:i:s') : '-',
             $fuel->end_liters,
             $fuel->end_timestamp ? Carbon::parse($fuel->end_timestamp)->format('d-m-Y H:i:s') : '-',
-            $fuel->estimated_fuel_used,
+            number_format($fuel->estimated_fuel_used, 2, '.', ''),
         ];
     }
 }

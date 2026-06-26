@@ -16,6 +16,8 @@ use App\Http\Controllers\TripSyncController;
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\ActivityReportController;
 use App\Http\Controllers\FuelReportController;
+use App\Http\Controllers\FuelFillReportController;
+use App\Http\Controllers\TripReportController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -106,6 +108,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/reports/fuel-consumed', [FuelReportController::class, 'index'])->name('reports.fuel.index');
     Route::get('/reports/fuel-consumed/data', [FuelReportController::class, 'getData'])->name('reports.fuel.data');
     Route::get('/reports/fuel-consumed/export', [FuelReportController::class, 'export'])->name('reports.fuel.export');
+    Route::get('/reports/fuel-fill', [FuelFillReportController::class, 'index'])->name('reports.fuel-fill.index');
+    Route::get('/reports/fuel-fill/data', [FuelFillReportController::class, 'getData'])->name('reports.fuel-fill.data');
+    Route::get('/reports/fuel-fill/export', [FuelFillReportController::class, 'export'])->name('reports.fuel-fill.export');
+    Route::get('/reports/trips', [TripReportController::class, 'index'])->name('reports.trips.index');
+    Route::get('/reports/trips/data', [TripReportController::class, 'getData'])->name('reports.trips.data');
+    Route::get('/reports/trips/export', [TripReportController::class, 'export'])->name('reports.trips.export');
 });
 // Admin routes for User Management (only admin role)
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
