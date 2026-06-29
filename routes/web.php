@@ -18,6 +18,7 @@ use App\Http\Controllers\ActivityReportController;
 use App\Http\Controllers\FuelReportController;
 use App\Http\Controllers\FuelFillReportController;
 use App\Http\Controllers\TripReportController;
+use App\Http\Controllers\LoginLogController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -91,7 +92,9 @@ Route::get('/dashboard', function () {
         ->get();
 
     $topSmallCarFuelLabels = $topSmallCarFuel->pluck('registration');
-    $topSmallCarFuelData = $topSmallCarFuel->pluck('total_fuel');
+    $topSmallCarFuelData = $topSmallCarFuel->pluck('total_fuel')->map(function ($fuel) {
+        return round($fuel, 2);
+    });
 
     // Data untuk Grafik Top 10 Highest Fuel Consumption (Trucks)
     $startOfMonth = now()->startOfMonth(); // otomatis ambil bulan & tahun sekarang
@@ -109,7 +112,9 @@ Route::get('/dashboard', function () {
         ->get();
 
     $topTruckFuelLabels = $topTruckFuel->pluck('registration');
-    $topTruckFuelData = $topTruckFuel->pluck('total_fuel');
+    $topTruckFuelData = $topTruckFuel->pluck('total_fuel')->map(function ($fuel) {
+        return round($fuel, 2);
+    });
 
     // Data untuk Grafik Top 10 Highest Fuel Consumption (Traktor)
     $startOfMonth = now()->startOfMonth(); // otomatis ambil bulan & tahun sekarang
@@ -127,7 +132,9 @@ Route::get('/dashboard', function () {
         ->get();
 
     $topTractorFuelLabels = $topTractorFuel->pluck('registration');
-    $topTractorFuelData = $topTractorFuel->pluck('total_fuel');
+    $topTractorFuelData = $topTractorFuel->pluck('total_fuel')->map(function ($fuel) {
+        return round($fuel, 2);
+    });
 
     return view('dashboard', compact(
         'totalVehicles', 'totalFuelConsumed', 'totalFuelFills', 'totalDistance', 'totalDrivingHours', 'totalIdleHours',
@@ -178,6 +185,9 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/users/{user}/edit', [UserManagementController::class, 'edit'])->name('users.edit');
     Route::put('/users/{user}', [UserManagementController::class, 'update'])->name('users.update');
     Route::delete('/users/{user}', [UserManagementController::class, 'destroy'])->name('users.destroy');
+
+    // Login Log
+    Route::get('/login-logs', [LoginLogController::class, 'index'])->name('login-logs.index');
 });
 
 require __DIR__.'/auth.php';

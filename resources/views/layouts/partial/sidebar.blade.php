@@ -32,6 +32,7 @@
 						</a>
 						<ul class="pcoded-submenu">
 							<li><a href="{{ route('admin.users.index') }}" class="">User Management</a></li>
+							<li><a href="{{ route('admin.login-logs.index') }}" class="">Login Log</a></li>
 						</ul>
 					</li>
 				@endrole

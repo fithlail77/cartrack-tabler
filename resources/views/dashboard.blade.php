@@ -362,7 +362,7 @@
                         anchor: 'end',
                         align: 'right',
                         formatter: function(value) {
-                            return value.toLocaleString('id-ID') + ' L';
+                            return value.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' L';
                         },
                         font: {
                             size: 10,
@@ -372,7 +372,7 @@
                     tooltip: {
                         callbacks: {
                             label: function(context) {
-                                return 'Total: ' + context.parsed.x.toLocaleString('id-ID') + ' Liter';
+                                return 'Total: ' + context.parsed.x.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' Liter';
                             }
                         }
                     }
@@ -429,7 +429,7 @@
                         anchor: 'end',
                         align: 'right',
                         formatter: function(value) {
-                            return value.toLocaleString('id-ID') + ' L';
+                            return value.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' L';
                         },
                         font: {
                             size: 10,
@@ -439,7 +439,7 @@
                     tooltip: {
                         callbacks: {
                             label: function(context) {
-                                return 'Total: ' + context.parsed.x.toLocaleString('id-ID') + ' Liter';
+                                return 'Total: ' + context.parsed.x.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' Liter';
                             }
                         }
                     }
@@ -496,7 +496,7 @@
                         anchor: 'end',
                         align: 'right',
                         formatter: function(value) {
-                            return value.toLocaleString('id-ID') + ' L';
+                            return value.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' L';
                         },
                         font: {
                             size: 10,
@@ -506,7 +506,7 @@
                     tooltip: {
                         callbacks: {
                             label: function(context) {
-                                return 'Total: ' + context.parsed.x.toLocaleString('id-ID') + ' Liter';
+                                return 'Total: ' + context.parsed.x.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' Liter';
                             }
                         }
                     }
