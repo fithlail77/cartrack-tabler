@@ -75,9 +75,64 @@ Route::get('/dashboard', function () {
     $topFuelLabels = $topFuelFills->pluck('registration');
     $topFuelData = $topFuelFills->pluck('total');
 
+    // Data untuk Grafik Top 10 Highest Fuel Consumption (Small Cars)
+    $startOfMonth = now()->startOfMonth(); // otomatis ambil bulan & tahun sekarang
+    $endOfMonth   = now()->endOfMonth();
+
+    $topSmallCarFuel = FuelLevel::select('registration')
+        ->whereHas('vehicle', function ($query) {
+            $query->where('client_vehicle_description', 'Mobil Kecil');
+        })
+        ->whereBetween('start_timestamp', [$startOfMonth, $endOfMonth])
+        ->selectRaw('registration, SUM(estimated_fuel_used) as total_fuel')
+        ->groupBy('registration')
+        ->orderByDesc('total_fuel')
+        ->limit(10)
+        ->get();
+
+    $topSmallCarFuelLabels = $topSmallCarFuel->pluck('registration');
+    $topSmallCarFuelData = $topSmallCarFuel->pluck('total_fuel');
+
+    // Data untuk Grafik Top 10 Highest Fuel Consumption (Trucks)
+    $startOfMonth = now()->startOfMonth(); // otomatis ambil bulan & tahun sekarang
+    $endOfMonth   = now()->endOfMonth();
+
+    $topTruckFuel = FuelLevel::select('registration')
+        ->whereHas('vehicle', function ($query) {
+            $query->where('client_vehicle_description', 'Truk');
+        })
+        ->whereBetween('start_timestamp', [$startOfMonth, $endOfMonth])
+        ->selectRaw('registration, SUM(estimated_fuel_used) as total_fuel')
+        ->groupBy('registration')
+        ->orderByDesc('total_fuel')
+        ->limit(10)
+        ->get();
+
+    $topTruckFuelLabels = $topTruckFuel->pluck('registration');
+    $topTruckFuelData = $topTruckFuel->pluck('total_fuel');
+
+    // Data untuk Grafik Top 10 Highest Fuel Consumption (Traktor)
+    $startOfMonth = now()->startOfMonth(); // otomatis ambil bulan & tahun sekarang
+    $endOfMonth   = now()->endOfMonth();
+
+    $topTractorFuel = FuelLevel::select('registration')
+        ->whereHas('vehicle', function ($query) {
+            $query->where('client_vehicle_description', 'Traktor');
+        })
+        ->whereBetween('start_timestamp', [$startOfMonth, $endOfMonth])
+        ->selectRaw('registration, SUM(estimated_fuel_used) as total_fuel')
+        ->groupBy('registration')
+        ->orderByDesc('total_fuel')
+        ->limit(10)
+        ->get();
+
+    $topTractorFuelLabels = $topTractorFuel->pluck('registration');
+    $topTractorFuelData = $topTractorFuel->pluck('total_fuel');
+
     return view('dashboard', compact(
         'totalVehicles', 'totalFuelConsumed', 'totalFuelFills', 'totalDistance', 'totalDrivingHours', 'totalIdleHours',
-        'chartLabels', 'chartData', 'topFuelLabels', 'topFuelData', 'currentMonthName'
+        'chartLabels', 'chartData', 'topFuelLabels', 'topFuelData', 'currentMonthName',
+        'topSmallCarFuelLabels', 'topSmallCarFuelData', 'topTruckFuelLabels', 'topTruckFuelData', 'topTractorFuelLabels', 'topTractorFuelData'
     ));
 })->middleware(['auth', 'verified'])->name('dashboard');
 

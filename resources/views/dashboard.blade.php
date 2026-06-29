@@ -212,6 +212,36 @@
 										</div>
 									</div>
 								</div>
+                                <div class="col-md-6 col-xl-4">
+                                    <div class="card user-card">
+                                        <div class="card-header">
+                                            <h5>Top 10 Pemakaian BBM Tertinggi (Mobil Kecil) - {{ $currentMonthName }}</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <canvas id="topSmallCarFuelChart" style="min-height: 300px;"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+								<div class="col-md-6 col-xl-4">
+                                    <div class="card user-card">
+                                        <div class="card-header">
+                                            <h5>Top 10 Pemakaian BBM Tertinggi (Truk) - {{ $currentMonthName }}</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <canvas id="topTruckFuelChart" style="min-height: 300px;"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+								<div class="col-md-6 col-xl-4">
+                                    <div class="card user-card">
+                                        <div class="card-header">
+                                            <h5>Top 10 Pemakaian BBM Tertinggi (Traktor) - {{ $currentMonthName }}</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <canvas id="topTractorFuelChart" style="min-height: 300px;"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
 							</div>
 							<!-- [ Main Content ] end -->
 						</div>
@@ -316,6 +346,207 @@
                     data: {!! json_encode($topFuelData) !!},
                     backgroundColor: 'rgba(40, 167, 69, 0.8)',
                     borderColor: 'rgba(40, 167, 69, 1)',
+                    borderWidth: 1,
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                indexAxis: 'y', // Membuat chart menjadi horizontal
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'right',
+                        formatter: function(value) {
+                            return value.toLocaleString('id-ID') + ' L';
+                        },
+                        font: {
+                            size: 10,
+                            weight: 'bold'
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return 'Total: ' + context.parsed.x.toLocaleString('id-ID') + ' Liter';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        grace: '20%', // Ruang untuk label angka di kanan
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return value + ' L';
+                            }
+                        }
+                    },
+                    y: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    });
+
+    // Script untuk Horizontal Bar Chart Top 10 Fuel Consumption (Small Cars)
+    document.addEventListener("DOMContentLoaded", function() {
+        const topSmallCarCtx = document.getElementById('topSmallCarFuelChart').getContext('2d');
+        new Chart(topSmallCarCtx, {
+            type: 'bar',
+            plugins: [ChartDataLabels],
+            data: {
+                labels: {!! json_encode($topSmallCarFuelLabels) !!},
+                datasets: [{
+                    label: 'Total Konsumsi BBM (Liter)',
+                    data: {!! json_encode($topSmallCarFuelData) !!},
+                    backgroundColor: 'rgba(255, 159, 64, 0.8)',
+                    borderColor: 'rgba(255, 159, 64, 1)',
+                    borderWidth: 1,
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                indexAxis: 'y', // Membuat chart menjadi horizontal
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'right',
+                        formatter: function(value) {
+                            return value.toLocaleString('id-ID') + ' L';
+                        },
+                        font: {
+                            size: 10,
+                            weight: 'bold'
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return 'Total: ' + context.parsed.x.toLocaleString('id-ID') + ' Liter';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        grace: '20%', // Ruang untuk label angka di kanan
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return value + ' L';
+                            }
+                        }
+                    },
+                    y: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    });
+
+	// Script untuk Horizontal Bar Chart Top 10 Fuel Consumption (Trucks)
+    document.addEventListener("DOMContentLoaded", function() {
+        const topTruckCtx = document.getElementById('topTruckFuelChart').getContext('2d');
+        new Chart(topTruckCtx, {
+            type: 'bar',
+            plugins: [ChartDataLabels],
+            data: {
+                labels: {!! json_encode($topTruckFuelLabels) !!},
+                datasets: [{
+                    label: 'Total Konsumsi BBM (Liter)',
+                    data: {!! json_encode($topTruckFuelData) !!},
+                    backgroundColor: 'rgba(255, 159, 64, 0.8)',
+                    borderColor: 'rgba(255, 159, 64, 1)',
+                    borderWidth: 1,
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                indexAxis: 'y', // Membuat chart menjadi horizontal
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'right',
+                        formatter: function(value) {
+                            return value.toLocaleString('id-ID') + ' L';
+                        },
+                        font: {
+                            size: 10,
+                            weight: 'bold'
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return 'Total: ' + context.parsed.x.toLocaleString('id-ID') + ' Liter';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        grace: '20%', // Ruang untuk label angka di kanan
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return value + ' L';
+                            }
+                        }
+                    },
+                    y: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    });
+
+	// Script untuk Horizontal Bar Chart Top 10 Fuel Consumption (Tractors)
+    document.addEventListener("DOMContentLoaded", function() {
+        const topTractorCtx = document.getElementById('topTractorFuelChart').getContext('2d');
+        new Chart(topTractorCtx, {
+            type: 'bar',
+            plugins: [ChartDataLabels],
+            data: {
+                labels: {!! json_encode($topTractorFuelLabels) !!},
+                datasets: [{
+                    label: 'Total Konsumsi BBM (Liter)',
+                    data: {!! json_encode($topTractorFuelData) !!},
+                    backgroundColor: 'rgba(255, 159, 64, 0.8)',
+                    borderColor: 'rgba(255, 159, 64, 1)',
                     borderWidth: 1,
                     borderRadius: 4
                 }]

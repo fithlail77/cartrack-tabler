@@ -26,6 +26,6 @@ class FuelLevel extends Model
 
     public function vehicle(): BelongsTo
     {
-        return $this->belongsTo(Vehicle::class);
+        return $this->belongsTo(Vehicle::class, 'registration', 'registration');
     }
 }
