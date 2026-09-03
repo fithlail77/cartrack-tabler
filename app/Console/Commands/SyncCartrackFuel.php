@@ -45,6 +45,6 @@ class SyncCartrackFuel extends Command
             }
         });
 
-        $this->info("185 Unit kendaraan telah dimasukkan ke dalam antrian.");
+        $this->info("188 Unit kendaraan telah dimasukkan ke dalam antrian.");
     }
 }
