@@ -13,9 +13,9 @@ class CartrackApiService
 
     public function __construct()
     {
-        $this->baseUrl = config('services.cartrack.url');
-        $this->username = config('services.cartrack.username');
-        $this->password = config('services.cartrack.password');
+        $this->baseUrl = config('services.cartrack.url', env('CARTRACK_API_URL'));
+        $this->username = config('services.cartrack.username', env('CARTRACK_API_USERNAME'));
+        $this->password = config('services.cartrack.password', env('CARTRACK_API_PASSWORD'));
     }
 
     /**
